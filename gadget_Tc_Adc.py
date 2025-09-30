@@ -1,9 +1,53 @@
+class arduino:
+#
+  def __init__(self):
+    #read serials#    from read_m5b_class import m5logger
+    import serial
+    self.ser0=serial.Serial("/dev/ttyACM0",19200)
+    self.ser1=serial.Serial("/dev/ttyACM1",19200)
+#   
+  def read(self):
+    i=0
+    while True:
+      i=i+1
+      line01 = self.ser0.readline()
+      line02 = self.ser1.readline()
+      try:
+        line01s=line01.strip().decode('utf-8')
+        line02s=line02.strip().decode('utf-8')
+      except UnicodeDecodeError:
+        continue
+      data1s=line01s.split(",")
+      data2s=line02s.split(",")
+      if len(data1s)!=9 or len(data2s)!=9:
+        continue
+      data1=[]
+      data2=[]
+      for i in range(0,8):
+        data1=data1+[data1s[i+1]]
+        data2=data2+[data2s[i+1]]
+      try:
+        data1s = [float(val) for val in data1]
+        data2s = [float(val) for val in data2]
+      except Exception as e:
+        continue
+      break
+    if data1s[0]=='A2':
+      array=data2s+data1s
+    else:
+      array=data1s+data2s
+    return array
+#    
+  def close(self):
+    self.ser0.close()   
+    self.ser1.close() 
+#
 class read2m5:
 #
   def __init__(self):
     #read serials#    from read_m5b_class import m5logger
-    self.ser0=serial.Serial("/dev/ttyUSB0",115200)
-    self.ser1=serial.Serial("/dev/ttyUSB1",115200)
+    self.ser0=serial.Serial("/dev/ttyACM2",115200)
+    self.ser1=serial.Serial("/dev/ttyACM3",115200)
 #   
   def reads(self):
     i=0
@@ -18,23 +62,24 @@ class read2m5:
         continue
       data1s=line01s.split(",")
       data2s=line02s.split(",")
-      if len(data1s)!=12 or len(data2s)!=12:
+      if len(data1s)!=13 or len(data2s)!=13:
         continue
       data1=[]
       data2=[]
       for i in range(0,10):
-        data1=data1+[data1s[i+2]]
-        data2=data2+[data2s[i+2]]
+        data1=data1+[data1s[i+3]]
+        data2=data2+[data2s[i+3]]
       try:
         data1s = [float(val) for val in data1]
         data2s = [float(val) for val in data2]
       except Exception as e:
         continue
       break
-    if data1s[0]=='03':
+    if data1s[0]=='02':
       array=data2s+data1s
     else:
       array=data1s+data2s
+#    print(array)
     return array
 #    
   def close(self):
@@ -42,9 +87,6 @@ class read2m5:
     self.ser1.close()   
 ### ### ###
 class arduino:
-
-
-
 #
   def __init__(self):
     #read serials#    from read_m5b_class import m5logger
@@ -68,7 +110,7 @@ class arduino:
         continue
       data1=[]
       data2=[]
-      for i in range(0,10):
+      for i in range(0,8):
         data1=data1+[data1s[i+2]]
         data2=data2+[data2s[i+2]]
       try:
@@ -77,7 +119,7 @@ class arduino:
       except Exception as e:
         continue
       break
-    if data1s[0]=='03':
+    if data1s[0]=='02':
       array=data2s+data1s
     else:
       array=data1s+data2s

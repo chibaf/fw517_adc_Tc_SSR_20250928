@@ -106,6 +106,7 @@ void loop()
   sensor8 = adc.readCurrentChannel(); // DOUT arriving here are from MUX AIN6 and AIN7
  
   //print the result.
+  Serial.print("A2,");
   Serial.print(sensor1,10);
   Serial.print(", ");
   Serial.print(sensor2,10);
