@@ -51,4 +51,6 @@ class sers:
 
 ser=sers()
 while 1:
-  print(len(ser.read()))
+  a=ser.read()
+  if len(a)==36:
+    print(a)
