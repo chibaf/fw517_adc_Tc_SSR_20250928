@@ -10,6 +10,8 @@ class sers:
     time.sleep(5)
 #   
   def read(self):
+#    global data1,data2,data3,data4
+    data1=data2=data3=data4=[]
     i=0
     while True:
       i=i+1
@@ -45,8 +47,6 @@ class sers:
       if data4s[0]=="A1": data3=data4s[1:9]
       if data4s[0]=="A2": data4=data4s[1:9]
 #     
-      print(len(data1))
-      print(len(data3))
       return data1+data2+data3+data4
 
 ser=sers()
