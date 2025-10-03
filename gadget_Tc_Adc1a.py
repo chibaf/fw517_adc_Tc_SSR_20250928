@@ -160,7 +160,7 @@ class thread_ssr:
       ssr1=0   # ssr off
     else:
       ssr1=1   # ssr on
-    #print([ssr1,ssr18,a,f"time_elapsed:{time_elapsed:.1f}",f"temp:{temp}",f"av:{av:.2f}"])
+#    print([ssr1,ssr18,a,f"time_elapsed:{time_elapsed:.1f}",f"temp:{temp}",f"av:{av:.2f}"])
     q.put([ssr1,ssr18,a[10],a[11]])   # set ssr value to queu
     return
 
@@ -204,7 +204,6 @@ core_timer_start = time.time()
 while True:
   try:
     # output data
-    adcline=adc.read()
     line0=loggers.read()
     line=[]
     for i in range(0,10):
@@ -215,7 +214,7 @@ while True:
       it=it+1
       thread1=thread_ssr() #provide a thread
       q.put(line+[time.time()]+[time.time()])
-      print(line+[time.time()]+[time.time()])
+#      print(line+[time.time()]+[time.time()])
       th = threading.Thread(target=thread1.thread,args=(it,q),daemon=True)
       th.start()
     if th.is_alive()==False:  #when no thread
@@ -225,13 +224,16 @@ while True:
       ssrtime2=ssr[3]
       thread1=thread_ssr() #provide a thread
       q.put(line+[ssrtime1,ssrtime2])
-      #print(line+[ssrtime1,ssrtime2]+adcline)
+      print(len(line))
+ #     print(line+[ssrtime1,ssrtime2])
       th = threading.Thread(target=thread1.thread,args=(it,q),daemon=True)
       th.start()
-
     # --- COREヒーター(12番)の独立制御 ---
     core_period = 100.0  # 秒
     core_on_time = 20.0  # ON時間
+    line1=adc.read()
+    line2=line+line1
+    print(len(line2))
     now = time.time()
     elapsed = (now - core_timer_start) % core_period
     if elapsed < core_on_time:
@@ -254,7 +256,7 @@ while True:
     row=st + ss[1:5] + "," + str(round(time.time()-start, 2)) + ","
     for i in range(0,len(line)):
       row=row+str(line[i])+"," 
-    row=row+str(ssr[0])+","+str(ssr[1])+","+str(ssr[2])#+adcline+"\n"+adcline
+    row=row+str(ssr[0])+","+str(ssr[1])+","+str(ssr[2])+"\n"
     f.write(row)
 # plotting
     x = range(0, 10, 1)
@@ -281,5 +283,6 @@ while True:
     GPIO.output(18, False)
     GPIO.output(19, False)
     loggers.close()
+    adc.close()
     f.close()
     exit()
