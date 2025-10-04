@@ -3,8 +3,8 @@ class sers:
   def __init__(self):
     #read serials#    from read_m5b_class import m5logger
     import serial,time
-    self.ser0=serial.Serial("/dev/ttyACM0",19200) # should be 19200->115200
-    self.ser1=serial.Serial("/dev/ttyACM1",19200) # should be 19200->115200
+    self.ser0=serial.Serial("/dev/ttyACM0",115200) 
+    self.ser1=serial.Serial("/dev/ttyACM1",115200) 
     self.ser2=serial.Serial("/dev/ttyACM2",115200)
     self.ser3=serial.Serial("/dev/ttyACM3",115200)
 #   
