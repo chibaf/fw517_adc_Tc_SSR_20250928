@@ -54,12 +54,19 @@ class sers:
 ser=sers()
 import time
 from datetime import date
+import matplotlib.pyplot as plt
 #
 current_time = time.strftime("_H%H_M%M_S%S", time.localtime())
 fn = "TAD_" + str(date.today()) + current_time + ".csv"
 f=open(fn, 'w', encoding="utf-8")
 start=time.time()
 core_timer_start=start
+tc=[[0.0]*100]*20
+ad=[[0.0]*100]*16
+x=range(0,100)
+fig = plt.figure(figsize=(11,4))
+ax1 = fig.add_subplot(121)
+ax2 = fig.add_subplot(122)
 while 1:
  try:
   a=ser.read()
@@ -72,6 +79,25 @@ while 1:
       row=row+a[i]+","
     row=row+a[35]
     f.write(row+"\n")
+# plot
+    plt.clf()
+    for i in range(0,20):
+      tc[i].pop(-1)
+      try:
+        tc[i].insert(0,float(a[i]))
+      except:
+        continue
+    for i in range(0,16):
+      ad[i].pop(-1)
+      try:
+        ad[i].insert(0,float(a[i+20]))
+      except:
+        continue 
+    for i in range(0,20):
+      ax1.plot(x,tc[i])
+    for i in range(0,16):
+      ax2.plot(x,ad[i])
+    plt.show()
  except KeyboardInterrupt:
   print("KeyboardInterrupt:")
   ser.close()
