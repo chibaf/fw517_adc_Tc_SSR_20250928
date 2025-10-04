@@ -44,11 +44,20 @@ class sers:
       if data4s[0]=="02": data2=data4s[3:13]
       if data4s[0]=="A1": data3=data4s[1:9]
       if data4s[0]=="A2": data4=data4s[1:9]
-#     
       return data1+data2+data3+data4
+  def close(self):
+    self.ser0.close()
+    self.ser1.close()
+    self.ser2.close()
+    self.ser3.close()
 
 ser=sers()
 while 1:
-  a=ser.read()
-  if len(a)==36:
-    print(a)
+  try:
+    a=ser.read()
+    if len(a)==36:
+      print(a)
+  except KeyboardInterrupt:
+    print("KeyboardInterrupt:")
+    ser.close()
+    exit()
