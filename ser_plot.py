@@ -66,7 +66,9 @@ ad=[[0.0]*100]*16
 x=range(0,100)
 fig = plt.figure(figsize=(11,4))
 ax1 = fig.add_subplot(121)
+ax1.set_title("Tc")
 ax2 = fig.add_subplot(122)
+ax2.set_title("ADC")
 while 1:
  try:
   a=ser.read()
@@ -80,7 +82,7 @@ while 1:
     row=row+a[35]
     f.write(row+"\n")
 # plot
-    plt.clf()
+    #plt.clf()
     for i in range(0,20):
       tc[i].pop(-1)
       try:
@@ -94,10 +96,16 @@ while 1:
       except:
         continue 
     for i in range(0,20):
-      ax1.plot(x,tc[i])
+      try:
+        ax1.plot(x,tc[i])
+      except:
+        continue
     for i in range(0,16):
-      ax2.plot(x,ad[i])
-    plt.show()
+      try:
+        ax2.plot(x,ad[i])
+      except:
+        continue
+    plt.pause(0.1)
  except KeyboardInterrupt:
   print("KeyboardInterrupt:")
   ser.close()
