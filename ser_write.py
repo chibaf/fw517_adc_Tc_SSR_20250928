@@ -11,9 +11,7 @@ class sers:
   def read(self):
 #    global data1,data2,data3,data4
     data1=data2=data3=data4=[]
-    i=0
     while True:
-      i=i+1
       line01 = self.ser0.readline()
       line02 = self.ser1.readline()
       line03 = self.ser2.readline()
