@@ -29,7 +29,7 @@ float sensor5, sensor6, sensor7, sensor8;
 
 void setup()
 {
-  Serial.begin(19200);
+  Serial.begin(115200);
   
  // Serial.println("Starting ADC");
 
